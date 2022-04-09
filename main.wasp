@@ -1,0 +1,68 @@
+app GetCommunityIdeasApp { // Main declaration, defines a new web app.
+  title: "GetCommunityIdeas app", // Used as a browser tab title.
+  dependencies: [
+    ("autoprefixer", "^10.4.4"),
+    ("postcss", "^8.4.12"),
+    ("tailwindcss", "^3.0.23"),
+    ("react-hook-form", "^7.29.0")
+  ]
+}
+
+route RootRoute { path: "/", to: MainPage } // Render page MainPage on url `/` (default url).
+route CreateIdeaRoute { path: "/create-idea", to: CreateIdeaPage } // Render page CreateIdeaPage on url `/create-idea`.
+route CreateIdeaRoute { path: "/ideas", to: ListIdeasPage } // Render page CreateIdeaPage on url `/create-idea`.
+
+page MainPage {
+  // We specify that ReactJS implementation of our page can be
+  // found in `ext/MainPage.js` as a default export (uses standard
+  // js import syntax).
+  component: import Main from "@ext/pages/MainPage.js"
+}
+
+page CreateIdeaPage {
+  // We specify that ReactJS implementation of our page can be
+  // found in `ext/MainPage.js` as a default export (uses standard
+  // js import syntax).
+  component: import Main from "@ext/pages/CreateIdeaPage.js"
+}
+
+page ListIdeasPage {
+  // We specify that ReactJS implementation of our page can be
+  // found in `ext/MainPage.js` as a default export (uses standard
+  // js import syntax).
+  component: import Main from "@ext/pages/ListIdeasPage.js"
+}
+
+// Entities
+
+entity Idea {=psl
+    id          Int     @id @default(autoincrement())
+    description String
+    isApproved  Boolean @default(false)
+    votes       Int     @default(0)
+    link        String @default("")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @default(now())
+psl=}
+
+
+// Queries
+
+query getIdeas {
+  // We specify that JS implementation of the query (which is an async JS function)
+  // can be found in `ext/queries.js` as named export `getIdeas`.
+  fn: import { getIdeas } from "@ext/queries.js",
+  // We tell Wasp that this query is doing something with entity `Idea`. With that, Wasp will
+  // automatically refresh the results of this query when ideas change.
+  entities: [Idea]
+}
+
+action createIdea {
+  fn: import { createIdea } from "@ext/actions.js",
+  entities: [Idea]
+}
+
+action updateIdea {
+  fn: import { updateIdea } from "@ext/actions.js",
+  entities: [Idea]
+}

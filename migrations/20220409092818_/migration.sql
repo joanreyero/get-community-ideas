@@ -1,0 +1,21 @@
+/*
+  Warnings:
+
+  - You are about to drop the column `isDone` on the `Idea` table. All the data in the column will be lost.
+
+*/
+-- RedefineTables
+PRAGMA foreign_keys=OFF;
+CREATE TABLE "new_Idea" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "description" TEXT NOT NULL,
+    "isApproved" BOOLEAN NOT NULL DEFAULT false,
+    "link" TEXT NOT NULL DEFAULT '',
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO "new_Idea" ("description", "id") SELECT "description", "id" FROM "Idea";
+DROP TABLE "Idea";
+ALTER TABLE "new_Idea" RENAME TO "Idea";
+PRAGMA foreign_key_check;
+PRAGMA foreign_keys=ON;
