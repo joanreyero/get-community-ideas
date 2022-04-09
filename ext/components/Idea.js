@@ -20,17 +20,11 @@ function Idea (props) {
 
     }
 
-    const hasLink = props.idea.link !== "";
-
     return (
         <div>
             <div>
                 <h3>
-                    {" "}
-
                     {props.idea.description}
-
-                    {" "}
                 </h3>
 
                 <ul>
@@ -39,7 +33,7 @@ function Idea (props) {
                         {props.idea.votes}
                     </li>
 
-                    {hasLink &&
+                    {props.idea.link !== "" &&
                     <li>
                         <a href={props.idea.link}>
                             Link
