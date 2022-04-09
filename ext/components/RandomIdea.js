@@ -10,7 +10,6 @@ function getRandomIdea(ideas) {
 function RandomIdea () {
 
     const {"data": ideas, isFetching, error} = useQuery(getIdeas);
-    console.log(ideas);
     return (
         <div className="">
             {ideas && <Idea idea={getRandomIdea(ideas)} />}

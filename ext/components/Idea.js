@@ -3,25 +3,24 @@ import updateIdea from "@wasp/actions/updateIdea";
 
 function Idea (props) {
 
-    const handleVotesChange = async (increment) => {
+    async function handleVotesChange(increment) {
+        try {
 
-            try {
+            await updateIdea({
+                "ideaId": props.idea.id,
+                "data": {increment,
+                    "votes": props.idea.votes}
+            });
 
-                await updateIdea({
-                    "ideaId": props.idea.id,
-                    "data": {increment,
-                        "votes": props.idea.votes}
-                });
+        } catch (error) {
 
-            } catch (error) {
+            window.alert(`Error while updating idea: ${error.message}`);
 
-                window.alert(`Error while updating idea: ${error.message}`);
+        }
 
-            }
+    }
 
-        },
-
-        hasLink = props.idea.link !== "";
+    const hasLink = props.idea.link !== "";
 
     return (
         <div>
@@ -54,6 +53,9 @@ function Idea (props) {
 
                 <button onClick={() => handleVotesChange(-1)}>
                     DownVote
+                </button>
+                <button onClick={() => handleVotesChange(0)}>
+                    Refresh
                 </button>
             </div>
         </div>

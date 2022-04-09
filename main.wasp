@@ -11,6 +11,8 @@ app GetCommunityIdeasApp { // Main declaration, defines a new web app.
 route RootRoute { path: "/", to: MainPage } // Render page MainPage on url `/` (default url).
 route CreateIdeaRoute { path: "/create-idea", to: CreateIdeaPage } // Render page CreateIdeaPage on url `/create-idea`.
 route CreateIdeaRoute { path: "/ideas", to: ListIdeasPage } // Render page CreateIdeaPage on url `/create-idea`.
+route TaskRoute { path: "/idea/:id", to: IdeaPage }
+
 
 page MainPage {
   // We specify that ReactJS implementation of our page can be
@@ -27,10 +29,11 @@ page CreateIdeaPage {
 }
 
 page ListIdeasPage {
-  // We specify that ReactJS implementation of our page can be
-  // found in `ext/MainPage.js` as a default export (uses standard
-  // js import syntax).
   component: import Main from "@ext/pages/ListIdeasPage.js"
+}
+
+page IdeaPage {
+  component: import Main from "@ext/pages/IdeaPage.js"
 }
 
 // Entities
@@ -54,6 +57,11 @@ query getIdeas {
   fn: import { getIdeas } from "@ext/queries.js",
   // We tell Wasp that this query is doing something with entity `Idea`. With that, Wasp will
   // automatically refresh the results of this query when ideas change.
+  entities: [Idea]
+}
+
+query getIdeaById {
+  fn: import { getIdeaById } from "@ext/queries.js",
   entities: [Idea]
 }
 

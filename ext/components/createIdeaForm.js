@@ -6,10 +6,11 @@ import createIdea from "@wasp/actions/createIdea";
 
 function CreateIdeaForm () {
 
-    const history = useHistory(),
+    const history = useHistory()
 
-        {register, handleSubmit, "formState": {errors}} = useForm(),
-        onSubmit = async ({description, link}) => {
+    const {register, handleSubmit, "formState": {errors}} = useForm()
+    
+    const onSubmit = async ({description, link}) => {
 
             await createIdea({description,
                 link});
