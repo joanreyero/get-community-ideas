@@ -1,22 +1,15 @@
 import React from "react";
 import Idea from "./Idea";
-import getIdeas from "@wasp/queries/getIdeas";
-import {useQuery} from "@wasp/queries";
 
 function getRandomIdea(ideas) {
     return ideas[Math.floor(Math.random() * ideas.length)]
 }
 
-function RandomIdea () {
+function RandomIdea (props) {
 
-    const {"data": ideas, isFetching, error} = useQuery(getIdeas);
     return (
         <div className="">
-            {ideas && <Idea idea={getRandomIdea(ideas)} />}
-
-            {isFetching && "Fetching..."}
-
-            {error && `Error: ${error}`}
+            <Idea idea={getRandomIdea(props.ideas)} showRefresh={true} />
         </div>
     );
 

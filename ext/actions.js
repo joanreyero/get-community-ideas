@@ -28,8 +28,8 @@ export const createIdea = async (args, context) => {
 };
 
 export const updateIdea = async (args, context) => context.entities.Idea.update({
-    "where": {"id": args.ideaId},
-    "data": {
-        "votes": args.data.votes + args.data.increment
+    where: {"id": args.ideaId},
+    data: {
+        votes: args.data.votes + args.data.update
     }
 });
