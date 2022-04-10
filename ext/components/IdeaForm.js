@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {useHistory} from "react-router-dom";
 import {useForm, Controller} from "react-hook-form";
 import CreatableSelect from 'react-select/creatable';
 import createIdea from "@wasp/actions/createIdea";
-import Select from "react-select";
 import getCategoriesAndGoals from "@wasp/queries/getCategoriesAndGoals";
 import {useQuery} from "@wasp/queries";
+import Message from "./message";
 
 function CreateIdeaForm () {
 
     const history = useHistory()
 
+    const [submitted, setSumbitted] = useState(false);
+    
     const {register, handleSubmit, "formState": {errors}, control} = useForm()
 
     const {"data": categoriesAndGoals, isFetching, error} = useQuery(getCategoriesAndGoals);
@@ -18,16 +20,27 @@ function CreateIdeaForm () {
     function toSelectInput(data) {
         return data.map(item => ({value: item, label: item}))
     }
-    
+    const waitAfterSuccess = 2000
+    useEffect(() => {
+        if (submitted) {
+            setTimeout(() => {
+                history.push("/")
+            }, waitAfterSuccess);
+        }
+    },[submitted])
+
     async function onSubmit(data) {
-        console.log(data)
-        await createIdea(data);
-        history.push("/");
-    };
+        await createIdea(data)
+        setSumbitted(true)
+        // history.push({
+        //     pathname: "/",
+        // });
+    }
+
 
     return (
         <div className="App">
-            {(categoriesAndGoals ) &&
+            {(categoriesAndGoals) &&
                 <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="description"> Description </label>
@@ -40,8 +53,8 @@ function CreateIdeaForm () {
                     {errors.twitterHandle && <span> This field is required </span>}
                 </div>
                 <div>
-                    <label htmlFor="link"> URL </label>
-                    <input placeholder="" {...register("link")} />
+                    <label htmlFor="url"> URL </label>
+                    <input placeholder="" {...register("url")} />
                 </div>
                 <div>
                     <label className="">Goals</label>
@@ -89,6 +102,7 @@ function CreateIdeaForm () {
             }
             {isFetching && <p>Loading...</p>}
             {error && <p>Error: {error.message}</p>}
+            {submitted && <Message message={{status: 200, body: "Idea submitted succesfully"}} delay={waitAfterSuccess} />}
         </div>
     )
 }

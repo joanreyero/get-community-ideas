@@ -75,9 +75,9 @@ function Idea (props) {
                         {props.idea.votes}
                     </li>
 
-                    {props.idea.link !== "" &&
+                    {props.idea.url !== "" &&
                     <li>
-                        <a href={props.idea.link}>
+                        <a href={props.idea.url}>
                             Link
                         </a>
                     </li>}

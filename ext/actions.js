@@ -19,10 +19,13 @@ export async function createIdea(args, context) {
         }
 
     }
+
+    args.goals = args.goals || []
+
     return context.entities.Idea.create({
         "data": {
             description: args.description,
-            link: args.link,
+            url: args.url,
             twitterHandle: args.twitterHandle,
             category: {
                 connectOrCreate: {

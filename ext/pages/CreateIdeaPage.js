@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "../components/Nav";
-import CreateIdeaForm from "../components/createIdeaForm";
+import CreateIdeaForm from "../components/IdeaForm";
 
 function CreateIdeaPage () {
 

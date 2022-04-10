@@ -5,7 +5,8 @@ import getApprovedUnvotedIdeas from "@wasp/queries/getApprovedUnvotedIdeas";
 import {useQuery} from "@wasp/queries";
 import useStickyState from "../components/helpers/useStickyState";
 
-function MainPage () {
+
+function MainPage (props) {
     const [
         voteState,
         setVoteState
@@ -16,11 +17,9 @@ function MainPage () {
     return (
         <div className="">
             <Nav />
-
             <h1 className="text-3xl font-bold underline">
                 Todo App
             </h1>
-
             {(ideas && (ideas.length > 0)) && <RandomIdea ideas={ideas} voteState={voteState} setVoteState={setVoteState} />}
 
             {(ideas && (ideas.length === 0)) && <div> No approved ideas left to vote </div>}
