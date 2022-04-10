@@ -1,11 +1,24 @@
 import HttpError from "@wasp/core/HttpError.js";
 
+const ideaIncludes = {
+    category: {
+        select: {
+            name: true
+        }
+    },
+    goals: {
+        select: {
+            name: true
+        }
+    }
+}
 
 export async function getApprovedIdeas (args, context) {
     return context.entities.Idea.findMany({
         where: {
             isApproved: true
-        }
+        },
+        include: ideaIncludes
     })
 }
 
@@ -27,7 +40,8 @@ export async function getApprovedUnvotedIdeas (args, context) {
     let approvedIdeas = await context.entities.Idea.findMany({
         where: {
             isApproved: true
-        }
+        },
+        include: ideaIncludes
     })
 
 
@@ -67,4 +81,21 @@ export async function getIdeaById (args, context) {
     console.log(idea)
 
     return idea
+}
+
+export async function getCategories (args, context) {
+    return context.entities.Category.findMany({})
+}
+
+export async function getGoals (args, context) {
+    return context.entities.Goals.findMany({})
+}
+
+export async function getCategoriesAndGoals (args, context) {
+    const catrgories = await context.entities.Category.findMany({})
+    const goals = await context.entities.Goal.findMany({})
+    return {
+        categories: catrgories.map(category => category.name),
+        goals: goals.map(goal => goal.name)
+    }
 }

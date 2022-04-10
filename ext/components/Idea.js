@@ -4,7 +4,7 @@ import useStickyState from "./helpers/useStickyState"
 
 
 function Idea (props) {
-
+    console.log(props)
     function voteStateControler(id, state, action) {
         console.log(state)
         if (action === 0) {

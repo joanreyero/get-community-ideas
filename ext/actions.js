@@ -1,8 +1,7 @@
 import HttpError from "@wasp/core/HttpError.js";
 
-export const createIdea = async (args, context) => {
-
-    const requiredFields = ["description"];
+export async function createIdea(args, context) {
+    const requiredFields = ["description", "twitterHandle", "category"];
     for (const field of requiredFields) {
 
         if (!args[field]) {
@@ -21,15 +20,38 @@ export const createIdea = async (args, context) => {
 
     }
     return context.entities.Idea.create({
-        "data": {"description": args.description,
-            "link": args.link}
-    });
-
-};
+        "data": {
+            description: args.description,
+            link: args.link,
+            twitterHandle: args.twitterHandle,
+            category: {
+                connectOrCreate: {
+                    where: {
+                        name: args.category.value
+                    },
+                    create: {
+                        name: args.category.value
+                    }
+                }
+            },
+            goals: {
+                connectOrCreate: args.goals.map(goal => ({
+                    where: {
+                        name: goal.value
+                    },
+                    create: {
+                        name: goal.value
+                    }
+                }))
+            }
+        }
+    })
+}
 
 export const updateIdea = async (args, context) => context.entities.Idea.update({
     where: {"id": args.ideaId},
     data: {
-        votes: args.data.votes + args.data.update
+        votes: args.data.votes + args.data.update,
+        updatedAt: new Date()
     }
 });

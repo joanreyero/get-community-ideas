@@ -4,7 +4,8 @@ app GetCommunityIdeasApp { // Main declaration, defines a new web app.
     ("autoprefixer", "^10.4.4"),
     ("postcss", "^8.4.12"),
     ("tailwindcss", "^3.0.23"),
-    ("react-hook-form", "^7.29.0")
+    ("react-hook-form", "^7.29.0"),
+    ("react-select", "^5.2.2")
   ]
 }
 
@@ -41,11 +42,29 @@ page IdeaPage {
 entity Idea {=psl
     id          Int     @id @default(autoincrement())
     description String
+    twitterHandle String
     isApproved  Boolean @default(false)
     votes       Int     @default(0)
     link        String @default("")
     createdAt   DateTime @default(now())
     updatedAt   DateTime @default(now())
+    goals       Goal[]
+    category    Category @relation(fields: [categoryId], references: [id])
+    categoryId  Int
+psl=}
+
+entity Goal {=psl
+    id          Int     @id @default(autoincrement())
+    name        String  @unique
+    ideas       Idea[]
+    createdAt   DateTime @default(now())
+psl=}
+
+entity Category {=psl
+    id          Int     @id @default(autoincrement())
+    name        String  @unique
+    ideas       Idea[]
+    createdAt   DateTime @default(now())
 psl=}
 
 
@@ -65,6 +84,22 @@ query getIdeaById {
   fn: import { getIdeaById } from "@ext/queries.js",
   entities: [Idea]
 }
+
+query getGoals {
+  fn: import { getGoals } from "@ext/queries.js",
+  entities: [Goal]
+}
+
+query getCategories {
+  fn: import { getCategories } from "@ext/queries.js",
+  entities: [Category]
+}
+
+query getCategoriesAndGoals {
+  fn: import { getCategoriesAndGoals } from "@ext/queries.js",
+  entities: [Category, Goal]
+}
+
 
 action createIdea {
   fn: import { createIdea } from "@ext/actions.js",
