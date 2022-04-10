@@ -1,11 +1,17 @@
 import React from "react";
 import Nav from "../components/Nav";
 import RandomIdea from "../components/RandomIdea";
-import getIdeas from "@wasp/queries/getIdeas";
+import getApprovedUnvotedIdeas from "@wasp/queries/getApprovedUnvotedIdeas";
 import {useQuery} from "@wasp/queries";
+import useStickyState from "../components/helpers/useStickyState";
 
 function MainPage () {
-    const {"data": ideas, isFetching, error} = useQuery(getIdeas);
+    const [
+        voteState,
+        setVoteState
+      ] = useStickyState({}, "votes")
+    console.log(voteState)
+    const {"data": ideas, isFetching, error} = useQuery(getApprovedUnvotedIdeas, {voted: Object.keys(voteState).map(id => parseInt(id))});
     return (
         <div className="">
             <Nav />
@@ -14,7 +20,9 @@ function MainPage () {
                 Todo App
             </h1>
 
-            {ideas && <RandomIdea ideas={ideas} />}
+            {(ideas && (ideas.length > 0)) && <RandomIdea ideas={ideas} />}
+
+            {(ideas && (ideas.length === 0)) && <div> No approved ideas left to vote </div>}
 
             {isFetching && "Fetching..."}
 

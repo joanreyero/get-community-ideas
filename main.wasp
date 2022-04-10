@@ -51,12 +51,13 @@ psl=}
 
 // Queries
 
-query getIdeas {
-  // We specify that JS implementation of the query (which is an async JS function)
-  // can be found in `ext/queries.js` as named export `getIdeas`.
-  fn: import { getIdeas } from "@ext/queries.js",
-  // We tell Wasp that this query is doing something with entity `Idea`. With that, Wasp will
-  // automatically refresh the results of this query when ideas change.
+query getApprovedIdeas {
+  fn: import { getApprovedIdeas } from "@ext/queries.js",
+  entities: [Idea]
+}
+
+query getApprovedUnvotedIdeas {
+  fn: import { getApprovedUnvotedIdeas } from "@ext/queries.js",
   entities: [Idea]
 }
 
