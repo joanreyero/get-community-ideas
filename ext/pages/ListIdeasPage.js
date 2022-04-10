@@ -1,11 +1,11 @@
 import React from "react";
 import Nav from "../components/Nav";
 import IdeasList from "../components/IdeasList"
-import getIdeas from "@wasp/queries/getIdeas";
+import getApprovedIdeas from "@wasp/queries/getApprovedIdeas";
 import {useQuery} from "@wasp/queries";
 
 function ListIdeaPage () {
-    const {"data": ideas, isFetching, error} = useQuery(getIdeas);
+    const {"data": ideas, isFetching, error} = useQuery(getApprovedIdeas);
 
     return (
         <div className="">

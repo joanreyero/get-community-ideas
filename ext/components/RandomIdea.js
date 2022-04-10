@@ -1,4 +1,5 @@
 import React from "react";
+import useStickyState from "./helpers/useStickyState";
 import Idea from "./Idea";
 
 function getRandomIdea(ideas) {
@@ -9,7 +10,7 @@ function RandomIdea (props) {
 
     return (
         <div className="">
-            <Idea idea={getRandomIdea(props.ideas)} showRefresh={true} />
+            <Idea idea={getRandomIdea(props.ideas)} showRefresh={true} voteState={props.voteState} setVoteState={props.setVoteState}/>
         </div>
     );
 

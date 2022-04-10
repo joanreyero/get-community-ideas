@@ -10,8 +10,9 @@ function MainPage () {
         voteState,
         setVoteState
       ] = useStickyState({}, "votes")
-    console.log(voteState)
-    const {"data": ideas, isFetching, error} = useQuery(getApprovedUnvotedIdeas, {voted: Object.keys(voteState).map(id => parseInt(id))});
+
+    const {"data": ideas, isFetching, error} = useQuery(getApprovedUnvotedIdeas, {voted: Object.keys(voteState).map(id => parseInt(id))})
+    
     return (
         <div className="">
             <Nav />
@@ -20,7 +21,7 @@ function MainPage () {
                 Todo App
             </h1>
 
-            {(ideas && (ideas.length > 0)) && <RandomIdea ideas={ideas} />}
+            {(ideas && (ideas.length > 0)) && <RandomIdea ideas={ideas} voteState={voteState} setVoteState={setVoteState} />}
 
             {(ideas && (ideas.length === 0)) && <div> No approved ideas left to vote </div>}
 

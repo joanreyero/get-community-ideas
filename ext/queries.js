@@ -64,5 +64,7 @@ export async function getIdeaById (args, context) {
         )
     }
 
+    console.log(idea)
+
     return idea
 }

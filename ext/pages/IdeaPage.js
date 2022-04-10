@@ -3,6 +3,7 @@ import Nav from "../components/Nav";
 import Idea from "../components/Idea";
 import getIdeaById from "@wasp/queries/getIdeaById";
 import {useQuery} from "@wasp/queries";
+import useStickyState from "../components/helpers/useStickyState";
 
 function IdeaSection (props) {
     return (
@@ -13,17 +14,21 @@ function IdeaSection (props) {
                 Todo App
             </h1>
 
-            <Idea idea={props.idea}/>
+            <Idea idea={props.idea} voteState={props.voteState} setVoteState={props.setVoteState}/>
         </div>
     );
 }
 
 function IdeaPage (props) {
-    console.log(props)
+    const [
+        voteState,
+        setVoteState
+      ] = useStickyState({}, "votes")
+
     const {"data": idea, isFetching, error} = useQuery(getIdeaById, {id: props.match.params.id});
     return (
         <div className="">
-            {idea && <IdeaSection idea={idea} />}
+            {idea && <IdeaSection idea={idea} voteState={voteState} setVoteState={setVoteState}/>}
 
             {isFetching && "Fetching..."}
 

@@ -5,12 +5,8 @@ import useStickyState from "./helpers/useStickyState"
 
 function Idea (props) {
 
-    const [
-        voteState,
-        setVoteState
-      ] = useStickyState({}, "votes")
-
     function voteStateControler(id, state, action) {
+        console.log(state)
         if (action === 0) {
             return {
                 canUpdate: true,
@@ -20,7 +16,7 @@ function Idea (props) {
 
         else if (! (id in state)) {
             state[id] = action
-            setVoteState({...state})                
+            props.setVoteState({...state})                
             return {
                 canUpdate: true,
                 update: action,
@@ -31,7 +27,7 @@ function Idea (props) {
 
         if (canUpdate) {
             state[id] = action
-            setVoteState({...state})
+            props.setVoteState({...state})
         }
 
         return {
@@ -42,7 +38,7 @@ function Idea (props) {
 
     async function handleVotesChange(action) {
         try {
-            const {canUpdate, update} = voteStateControler(props.idea.id, voteState, action)
+            const {canUpdate, update} = voteStateControler(props.idea.id, props.voteState, action)
             if (canUpdate) {
                 await updateIdea({
                     "ideaId": props.idea.id,
@@ -62,8 +58,8 @@ function Idea (props) {
     }
 
     function canShowButton(direction) {
-        const isInReach = direction == -1 ? voteState[props.idea.id] > -1 : voteState[props.idea.id] < 1
-        return !(props.idea.id in voteState) || isInReach
+        const isInReach = direction == -1 ? props.voteState[props.idea.id] > -1 : props.voteState[props.idea.id] < 1
+        return !(props.idea.id in props.voteState) || isInReach
     }
 
     return (
