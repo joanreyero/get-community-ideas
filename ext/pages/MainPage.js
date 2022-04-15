@@ -4,6 +4,10 @@ import RandomIdea from "../components/RandomIdea";
 import getApprovedUnvotedIdeas from "@wasp/queries/getApprovedUnvotedIdeas";
 import {useQuery} from "@wasp/queries";
 import useStickyState from "../components/helpers/useStickyState";
+import PageWrapper from "../components/PageWrapper";
+import Container from '@material-ui/core/Container';
+import theme from '../theme';
+import { ThemeProvider } from '@material-ui/core/styles';
 
 
 function MainPage (props) {
@@ -15,8 +19,8 @@ function MainPage (props) {
     const {"data": ideas, isFetching, error} = useQuery(getApprovedUnvotedIdeas, {voted: Object.keys(voteState).map(id => parseInt(id))})
     
     return (
-        <div className="">
-            <Nav />
+        <PageWrapper>
+            <Container maxWidth="md">
             <h1 className="text-3xl font-bold underline">
                 Todo App
             </h1>
@@ -27,7 +31,8 @@ function MainPage (props) {
             {isFetching && "Fetching..."}
 
             {error && `Error: ${error}`}
-        </div>
+            </Container>
+            </PageWrapper>
     );
 
 }

@@ -1,7 +1,17 @@
 import React from "react";
+import moment from 'moment'
 import updateIdea from "@wasp/actions/updateIdea";
-import useStickyState from "./helpers/useStickyState"
-
+import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import Container from '@material-ui/core/Container';
 
 function Idea (props) {
     console.log(props)
@@ -62,8 +72,59 @@ function Idea (props) {
         return !(props.idea.id in props.voteState) || isInReach
     }
 
+    const twitterUrl = `https://twitter.com/${props.idea.twitterHandle}`
+
+    const card = (
+        <React.Fragment>
+             <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                style={{ minWidth: '100%', width: '100%' }}
+                >
+                <Grid item xs={11}>
+                    <CardHeader
+                        avatar={
+                            <Avatar> {props.idea.twitterHandle[0].toUpperCase()} </Avatar>
+                        }
+                        title={
+                            <a href={ twitterUrl}> {props.idea.twitterHandle} </a>
+                        }
+                        subheader={moment(props.idea.createdAt).format("YYYY-MM-DD")}
+                    />
+                    <CardContent>
+                        <Grid container spacing={2} direction="row">
+                            <Grid item xs={12}>
+                                <Typography variant="h6" component="div">
+                                    {props.idea.description}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Chip label={props.idea.category.name} />
+                            </Grid>
+                            <Grid item xs={8}>
+                                {props.idea.goals.map((goal, idx) => <Chip label={goal.name} key={idx} />)}
+                            </Grid>
+                        </Grid>               
+                    </CardContent>
+                    <CardActions>
+                        <a href={props.idea.url} target="_blank" rel="noopener noreferrer">  
+                            <Button size="small">Learn More</Button>          
+                        </a>
+                    </CardActions>
+                </Grid>
+            </Grid>
+        </React.Fragment>
+        
+      );
+
     return (
         <div>
+            <Box sx={{ minWidth: 275 }}>
+                <Card variant="outlined">{card}</Card>
+            </Box>
             <div>
                 <h3>
                     {props.idea.description}

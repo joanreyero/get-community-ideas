@@ -1,12 +1,11 @@
 import React from "react";
-import useStickyState from "./helpers/useStickyState";
 import Idea from "./Idea";
 
-function getRandomIdea(ideas) {
-    return ideas[Math.floor(Math.random() * ideas.length)]
-}
-
 function RandomIdea (props) {
+
+    function getRandomIdea(ideas) {
+        return ideas[Math.floor(Math.random() * ideas.length)]
+    }
 
     return (
         <div className="">
