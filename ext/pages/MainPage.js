@@ -19,6 +19,7 @@ function MainPage (props) {
     const {"data": ideas, isFetching, error} = useQuery(getApprovedUnvotedIdeas, {voted: Object.keys(voteState).map(id => parseInt(id))})
     
     return (
+        <ThemeProvider theme={theme}>
         <PageWrapper>
             <Container maxWidth="md">
             <h1 className="text-3xl font-bold underline">
@@ -33,6 +34,7 @@ function MainPage (props) {
             {error && `Error: ${error}`}
             </Container>
             </PageWrapper>
+            </ThemeProvider>
     );
 
 }
